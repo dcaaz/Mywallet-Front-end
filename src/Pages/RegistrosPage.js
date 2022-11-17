@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Seta from "../Imagem/Seta.png";
 import SetaEntrada from "../Imagem/Entrada.png";
 import SetaSaida from "../Imagem/Saida.png";
+import { Link } from "react-router-dom";
 
 export default function RegistrosPage() {
     return (
@@ -14,14 +15,18 @@ export default function RegistrosPage() {
                 <h1>Não há registros de entrada ou saída</h1>
             </Registros>
             <Nova>
-                <Entrada>
-                    <img src={SetaEntrada} alt="Registrar nova entrada" />
-                    <h1>Nova entrada</h1>
-                </Entrada>
-                <Saida>
-                    <img src={SetaSaida} alt="Registrar nova saida" />
-                    <h1>Nova entrada</h1>
-                </Saida>
+                <Link to="/entrada">
+                    <Entrada>
+                        <img src={SetaEntrada} alt="Registrar nova entrada" />
+                        <h1>Nova entrada</h1>
+                    </Entrada>
+                </Link>
+                <Link to="/saida">
+                    <Saida>
+                        <img src={SetaSaida} alt="Registrar nova saida" />
+                        <h1>Nova entrada</h1>
+                    </Saida>
+                </Link>
             </Nova>
         </Roxo>
     )
