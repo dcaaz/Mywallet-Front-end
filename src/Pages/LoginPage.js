@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Logo from "../Imagem/Logo.png"
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../Ayth";
+import { useContext, useState } from "react";
 
 export default function LoginPage() {
 
@@ -10,9 +12,33 @@ export default function LoginPage() {
     const [desabilitar, setDesabilitar] = useState(false);
     const navigate = useNavigate();
 
+    const { setToken } = useContext(AuthContext);
+
     function logar(e) {
+        e.preventDefault();
+
         setDesabilitar(true);
-        navigate("/registros");
+
+        const URL = "http://localhost:5000/login";
+
+        const body = {
+            email: emailLogin,
+            senha: senhaLogin
+        }
+
+        const promise = axios.post(URL, body);
+
+        promise.then((res) => {
+            console.log("deu certo a res", res);
+           setToken(res.data.token);
+            navigate("/registros");
+        })
+
+        promise.catch((erro) => {
+            console.log("erro pagina de cadastro", erro.response.data);
+            alert(erro.response.data.message);
+            setDesabilitar(false);
+        })
     }
 
     return (

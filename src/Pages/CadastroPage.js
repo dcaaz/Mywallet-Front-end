@@ -2,17 +2,49 @@ import styled from "styled-components";
 import Logo from "../Imagem/Logo.png"
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function CadastroPage() {
+    const [nomeCadastro, setNomeCadastro] = useState("");
     const [emailCadastro, setEmailCadastro] = useState("");
     const [senhaCadastro, setSenhaCadastro] = useState("");
-    const [nomeCadastro, setNomeCadastro] = useState("");
-    const [fotoCadastro, setFotoCadastro] = useState("");
+    const [senhaConfirma, setSenhaConfirma] = useState("");
     const [desabilitar, setDesabilitar] = useState(false);
+    const navigate = useNavigate();
+
 
     function cadastrar(e) {
+        e.preventDefault();
         setDesabilitar(true);
-    }
+
+        if(senhaConfirma !== senhaCadastro){
+            alert("Suas senhas são diferentes");
+            setDesabilitar(false);
+        } else {
+
+        const URL = "http://localhost:5000/cadastro";
+
+        const body = {
+            nome: nomeCadastro,
+            email: emailCadastro,
+            senha: senhaCadastro
+        }
+
+        const promise = axios.post(URL, body);
+
+        promise.then((req) => {
+            console.log("deu certo a req");
+            console.log("resposta", req.response);
+            navigate("/");
+        })
+
+        promise.catch((erro) => {
+            console.log("erro pagina de cadastro", erro.response.data);
+            alert(erro.response.data.message);
+            setDesabilitar(false);
+        })
+    }}
 
     return (
         <>
@@ -59,9 +91,9 @@ export default function CadastroPage() {
                     <input
                         id="senha"
                         type="password"
-                        placeholder="   Confirme a senha"
-                        onChange={(e) => setFotoCadastro(e.target.value)}
-                        value={fotoCadastro}
+                        placeholder="  Senha"
+                        onChange={(e) => setSenhaConfirma(e.target.value)}
+                        value={senhaConfirma}
                         required
                         disabled={desabilitar}
                     />

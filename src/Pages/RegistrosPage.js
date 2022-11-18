@@ -3,13 +3,41 @@ import Seta from "../Imagem/Seta.png";
 import SetaEntrada from "../Imagem/Entrada.png";
 import SetaSaida from "../Imagem/Saida.png";
 import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../Ayth";
 
 export default function RegistrosPage() {
+
+    const { token } = useContext(AuthContext);
+
+    useEffect(() => {
+        const url = "http://localhost:5000/registros";
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.get(url, config);
+
+        promise.then((res) => {
+            console.log("res registros", res)
+        });
+
+        promise.catch((erro) => {
+            console.log("erro pagina registros", erro.response.data);
+            alert(erro.response.data.message);
+        })
+    }, [token, check]);
+
     return (
         <Roxo>
             <Header>
                 <h1>Olá, fulano</h1>
-                <img src={Seta} alt="retornar para login" />
+                <Link to="/">
+                    <img src={Seta} alt="retornar para login" />
+                </Link>
             </Header>
             <Registros>
                 <h1>Não há registros de entrada ou saída</h1>

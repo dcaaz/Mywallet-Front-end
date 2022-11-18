@@ -13,7 +13,7 @@ export default function App() {
     return (
         <BrowserRouter>
             <GlobalStyle />
-            {/* <AuthProvider> */}
+            <AuthProvider>
                 <Routes>
                     <Route path="/" element={<LoginPage />}></Route>
                     <Route path="/cadastro" element={<CadastroPage />}></Route>
@@ -21,7 +21,7 @@ export default function App() {
                     <Route path="/entrada" element={<EntradaPage />}></Route>
                     <Route path="/saida" element={<SaidaPage />}></Route>
                 </Routes>
-            {/* </AuthProvider> */}
+            </AuthProvider>
         </BrowserRouter>
     )
 }
