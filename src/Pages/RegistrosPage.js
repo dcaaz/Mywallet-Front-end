@@ -5,10 +5,13 @@ import SetaSaida from "../Imagem/Saida.png";
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Ayth";
+import axios from "axios";
 
 export default function RegistrosPage() {
 
-    const { token } = useContext(AuthContext);
+    const [transacao, setTransacao] = useState([]);
+
+    const { token, setNome, nome} = useContext(AuthContext);
 
     useEffect(() => {
         const url = "http://localhost:5000/registros";
@@ -22,19 +25,26 @@ export default function RegistrosPage() {
         const promise = axios.get(url, config);
 
         promise.then((res) => {
-            console.log("res registros", res)
+            console.log("res registros", res);
+            setNome(res.data.usuario.nome);
+            transacoes();
         });
 
         promise.catch((erro) => {
             console.log("erro pagina registros", erro.response.data);
             alert(erro.response.data.message);
         })
-    }, [token, check]);
+    }, [token, setNome]);
+    
+    function transacoes(){
+        console.log("entrei em transacoes");
+    };
+
 
     return (
         <Roxo>
             <Header>
-                <h1>Olá, fulano</h1>
+                <h1>Olá, {nome}</h1>
                 <Link to="/">
                     <img src={Seta} alt="retornar para login" />
                 </Link>
@@ -52,7 +62,7 @@ export default function RegistrosPage() {
                 <Link to="/saida">
                     <Saida>
                         <img src={SetaSaida} alt="Registrar nova saida" />
-                        <h1>Nova entrada</h1>
+                        <h1>Nova saída</h1>
                     </Saida>
                 </Link>
             </Nova>

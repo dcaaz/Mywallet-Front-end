@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../Ayth";
+import axios from "axios";
 
 export default function SaidaPage() {
     const [valorSaida, setValorSaida] = useState("");
@@ -8,9 +10,39 @@ export default function SaidaPage() {
     const [desabilitar, setDesabilitar] = useState(false);
     const navigate = useNavigate();
 
-    function salvarEntrada(e) {
+    const { token } = useContext(AuthContext);
+
+    function salvarSaida(e) {
+        e.preventDefault();
+
         setDesabilitar(true);
-        navigate("/registros");
+
+        const URL = "http://localhost:5000/entrada";
+
+        const body = {
+            valor: valorSaida,
+            descricao: descricaoSaida
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post(URL, body, config);
+
+        promise.then((res) => {
+            console.log("deu certo a res entrada", res);
+            alert("Nova saída adicionada");
+            navigate("/registros");
+        })
+
+        promise.catch((erro) => {
+            console.log("erro pagina de cadastro", erro.response.data);
+            alert(erro.response.data.message);
+            setDesabilitar(false);
+        })
     }
 
     return (
@@ -19,7 +51,7 @@ export default function SaidaPage() {
                 <h1>Nova Entrada</h1>
             </Header>
 
-            <form onSubmit={salvarEntrada}>
+            <form onSubmit={salvarSaida}>
                 <Input>
                     <input
                         id="valor"

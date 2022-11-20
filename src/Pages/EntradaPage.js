@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useContext } from "react";
+import { AuthContext } from "../Ayth";
 
 export default function EntradaPage() {
     const [valorEntrada, setValorEntrada] = useState("");
@@ -8,9 +11,38 @@ export default function EntradaPage() {
     const [desabilitar, setDesabilitar] = useState(false);
     const navigate = useNavigate();
 
+    const { token } = useContext(AuthContext);
+
     function salvarEntrada(e) {
+        e.preventDefault();
+
         setDesabilitar(true);
-        navigate("/registros");
+
+        const URL = "http://localhost:5000/entrada";
+
+        const body = {
+            valor: valorEntrada,
+            descricao: descricaoEntrada
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post(URL, body, config);
+
+        promise.then((res) => {
+            alert("Nova entrada adicionada");
+            navigate("/registros");
+        })
+
+        promise.catch((erro) => {
+            console.log("erro pagina de cadastro", erro.response);
+            alert(erro.response.data);
+            setDesabilitar(false);
+        })
     }
 
     return (
