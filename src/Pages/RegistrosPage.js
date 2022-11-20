@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Ayth";
 import axios from "axios";
+import ListaTransacoes from "../Componentes/ListaTransacoes";
 
 export default function RegistrosPage() {
 
     const [transacao, setTransacao] = useState([]);
 
-    const { token, setNome, nome} = useContext(AuthContext);
+    const { token, setNome, nome } = useContext(AuthContext);
 
     useEffect(() => {
         const url = "http://localhost:5000/registros";
@@ -27,7 +28,7 @@ export default function RegistrosPage() {
         promise.then((res) => {
             console.log("res registros", res);
             setNome(res.data.usuario.nome);
-            transacoes();
+            setTransacao(res.data.transacao)
         });
 
         promise.catch((erro) => {
@@ -35,11 +36,6 @@ export default function RegistrosPage() {
             alert(erro.response.data.message);
         })
     }, [token, setNome]);
-    
-    function transacoes(){
-        console.log("entrei em transacoes");
-    };
-
 
     return (
         <Roxo>
@@ -50,7 +46,16 @@ export default function RegistrosPage() {
                 </Link>
             </Header>
             <Registros>
-                <h1>Não há registros de entrada ou saída</h1>
+                {(transacao.length === 0)
+                    ?
+                    (<SemRegistros>Não há registros de entrada ou saída</SemRegistros>)
+                    :
+                    (
+                        <InfosTransf>
+                            {transacao.map((item, i) => <ListaTransacoes item={item} key={i} />)}
+                        </InfosTransf>
+                    )
+                }
             </Registros>
             <Nova>
                 <Link to="/entrada">
@@ -103,17 +108,28 @@ const Registros = styled.div`
     background-color: #FFFFFF;
     border-radius: 5px;
     margin-top: 78px;
+`
+
+const SemRegistros = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    h1{  
+    width: 180px;
+    height: 46px;
+    color: #868686;
+    font-style: regular;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 23.48px;
+    }
+`
+
+const InfosTransf = styled.div`  
     h1{
-        width: 180px;
-        height: 46px;
-        color: #868686;
-        font-style: regular;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 400;
-        line-height: 23.48px;
+        line-height: 19px;
     }
 `
 
