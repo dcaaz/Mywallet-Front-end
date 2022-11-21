@@ -51,9 +51,17 @@ export default function RegistrosPage() {
                     (<SemRegistros>Não há registros de entrada ou saída</SemRegistros>)
                     :
                     (
-                        <InfosTransf>
-                            {transacao.map((item, i) => <ListaTransacoes item={item} key={i} />)}
-                        </InfosTransf>
+                        <>
+                            <InfosTransf>
+                                {transacao.map((item, i) => <ListaTransacoes item={item} key={i} />)}
+                            </InfosTransf>
+                            <Saldo>
+                                <h1>SALDO</h1>
+                                <ValorSaldo>
+                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(50.000)}
+                                </ValorSaldo>
+                            </Saldo>
+                        </>
                     )
                 }
             </Registros>
@@ -187,4 +195,21 @@ const Saida = styled.div`
         font-weight: 700;
         line-height: 20px;
     }
+`
+
+const Saldo = styled.div` 
+    display: flex;
+    margin-left: 12px;
+    justify-content: space-between;
+    h1{
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 20px;
+    }
+`
+const ValorSaldo = styled.div` 
+    margin-right: 43px; 
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 19px;
 `

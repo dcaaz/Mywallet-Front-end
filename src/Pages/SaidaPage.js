@@ -17,7 +17,7 @@ export default function SaidaPage() {
 
         setDesabilitar(true);
 
-        const URL = "http://localhost:5000/entrada";
+        const URL = "http://localhost:5000/saida";
 
         const body = {
             valor: valorSaida,
@@ -48,7 +48,7 @@ export default function SaidaPage() {
     return (
         <>
             <Header>
-                <h1>Nova Entrada</h1>
+                <h1>Nova saida</h1>
             </Header>
 
             <form onSubmit={salvarSaida}>

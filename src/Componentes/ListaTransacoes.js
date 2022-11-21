@@ -1,18 +1,22 @@
 import styled from "styled-components"
 
 export default function ListaTransacoes(item) {
+    let cor = item.item.type;
+
     return (
-        <Teste>
-            <Data>
-                <h1>{item.item.dia}</h1>
-            </Data>
-            <Descricao>
-                <h1>{item.item.descricao}</h1>
-            </Descricao>
-            <Valor>
-                <h1>{item.item.valor}</h1>
-            </Valor>
-        </Teste>
+        <>
+            <Teste>
+                <Data>
+                    <h1>{item.item.dia}</h1>
+                </Data>
+                <Descricao>
+                    <h1>{(item.item.descricao)}</h1>
+                </Descricao>
+                <Valor cor={cor}>
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.item.valor)}
+                </Valor>
+            </Teste>
+        </>
     )
 }
 
@@ -23,22 +27,21 @@ const Teste = styled.div`
 `
 
 const Data = styled.div`
-    margin-right: 10px;
- h1 {
-        //color: #C6C6C6;
-        color: red;
+    width: 48px;
+    h1 {
+        color: #C6C6C6;
     }
 `
 
 const Descricao = styled.div`
-margin-right: 10px;
- h1 {
-        color: purple;
-    }
+    width: 160px;
+    h1 {
+            color: #000000;
+            text-transform: capitalize;
+        }
 `
 
 const Valor = styled.div`
- h1 {
-        color: blue;
-    }
+    width: 62px;
+    color: ${props => props.cor === "entrada" ? "#03AC00" : "#C70000"};
 `
