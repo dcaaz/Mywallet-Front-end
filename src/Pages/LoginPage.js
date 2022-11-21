@@ -29,7 +29,6 @@ export default function LoginPage() {
         const promise = axios.post(URL, body);
 
         promise.then((res) => {
-            console.log("deu certo a res", res);
             setToken(res.data.token);
             navigate("/registros");
         })

@@ -33,7 +33,6 @@ export default function SaidaPage() {
         const promise = axios.post(URL, body, config);
 
         promise.then((res) => {
-            console.log("deu certo a res entrada", res);
             alert("Nova saída adicionada");
             navigate("/registros");
         })

@@ -29,7 +29,6 @@ export default function RegistrosPage() {
         promise.then((res) => {
             setNome(res.data.usuario.nome);
             setTransacao(res.data.transacao);
-            console.log("tranf", res.data.transacao )
             soma(res.data.transacao);
         });
 
@@ -39,7 +38,7 @@ export default function RegistrosPage() {
         })
     }, [token, setNome]);
 
-    function soma(res){
+    function soma(res) {
         let soma = 0;
 
         for (let i = 0; i < res.length; i++) {
@@ -53,8 +52,7 @@ export default function RegistrosPage() {
 
         soma.toFixed(2);
 
-        setSaldo(soma); 
-        console.log("soma", soma)
+        setSaldo(soma);
     }
 
     return (
@@ -78,7 +76,7 @@ export default function RegistrosPage() {
                             <Saldo cor={saldo}>
                                 <h1>SALDO</h1>
                                 <h2>
-                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(saldo)}
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(saldo)}
                                 </h2>
                             </Saldo>
                         </>
@@ -142,16 +140,13 @@ const Registros = styled.div`
 const SemRegistros = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
-    h1{  
+    margin: auto;
     width: 180px;
-    height: 46px;
+    height: 100%;
     color: #868686;
-    font-style: regular;
     font-size: 20px;
     font-weight: 400;
     line-height: 23.48px;
-    }
 `
 
 const InfosTransf = styled.div`  
