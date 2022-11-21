@@ -11,6 +11,7 @@ import ListaTransacoes from "../Componentes/ListaTransacoes";
 export default function RegistrosPage() {
 
     const [transacao, setTransacao] = useState([]);
+    const [saldo, setSaldo] = useState(0);
 
     const { token, setNome, nome } = useContext(AuthContext);
 
@@ -26,9 +27,10 @@ export default function RegistrosPage() {
         const promise = axios.get(url, config);
 
         promise.then((res) => {
-            console.log("res registros", res);
             setNome(res.data.usuario.nome);
-            setTransacao(res.data.transacao)
+            setTransacao(res.data.transacao);
+            console.log("tranf", res.data.transacao )
+            soma(res.data.transacao);
         });
 
         promise.catch((erro) => {
@@ -36,6 +38,24 @@ export default function RegistrosPage() {
             alert(erro.response.data.message);
         })
     }, [token, setNome]);
+
+    function soma(res){
+        let soma = 0;
+
+        for (let i = 0; i < res.length; i++) {
+            if (res[i].type === "saida") {
+                soma = soma - Number(res[i].valor)
+            }
+            if (res[i].type === "entrada") {
+                soma = soma + Number(res[i].valor)
+            }
+        }
+
+        soma.toFixed(2);
+
+        setSaldo(soma); 
+        console.log("soma", soma)
+    }
 
     return (
         <Roxo>
@@ -55,11 +75,11 @@ export default function RegistrosPage() {
                             <InfosTransf>
                                 {transacao.map((item, i) => <ListaTransacoes item={item} key={i} />)}
                             </InfosTransf>
-                            <Saldo>
+                            <Saldo cor={saldo}>
                                 <h1>SALDO</h1>
-                                <ValorSaldo>
-                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(50.000)}
-                                </ValorSaldo>
+                                <h2>
+                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(saldo)}
+                                </h2>
                             </Saldo>
                         </>
                     )
@@ -116,6 +136,7 @@ const Registros = styled.div`
     background-color: #FFFFFF;
     border-radius: 5px;
     margin-top: 78px;
+    overflow: auto;
 `
 
 const SemRegistros = styled.div`
@@ -206,10 +227,11 @@ const Saldo = styled.div`
         font-weight: 700;
         line-height: 20px;
     }
-`
-const ValorSaldo = styled.div` 
-    margin-right: 43px; 
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 19px;
+    h2{
+        margin-right: 43px; 
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 19px;
+        color: ${props => props.cor >= 0 ? "#03AC00" : "#C70000"};
+    }
 `

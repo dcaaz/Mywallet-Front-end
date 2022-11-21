@@ -33,9 +33,7 @@ export default function CadastroPage() {
 
         const promise = axios.post(URL, body);
 
-        promise.then((req) => {
-            console.log("deu certo a req");
-            console.log("resposta", req.response);
+        promise.then(() => {
             navigate("/");
         })
 

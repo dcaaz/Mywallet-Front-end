@@ -30,7 +30,7 @@ export default function LoginPage() {
 
         promise.then((res) => {
             console.log("deu certo a res", res);
-           setToken(res.data.token);
+            setToken(res.data.token);
             navigate("/registros");
         })
 
